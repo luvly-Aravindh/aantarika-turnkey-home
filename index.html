@@ -12,6 +12,63 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <script src="https://fast.wistia.com/player.js" async></script>
 <style>
+
+   .aw-slider{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;
+             border-radius:inherit;background:#eae4db;touch-action:pan-y;
+             user-select:none;-webkit-user-select:none}
+  .aw-track{display:flex;height:100%;will-change:transform;
+            transition:transform .55s cubic-bezier(.4,0,.2,1)}
+  .aw-track.is-dragging{transition:none}
+  .aw-slide{position:relative;flex:0 0 100%;height:100%}
+  .aw-slide img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+ 
+  .aw-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+            width:44px;height:44px;border:0;border-radius:50%;
+            background:rgba(255,255,255,.86);color:#2b2620;display:grid;place-items:center;
+            cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.16);
+            transition:background .2s,transform .2s,opacity .25s;
+            -webkit-tap-highlight-color:transparent}
+  .aw-arrow:hover{background:#fff;transform:translateY(-50%) scale(1.06)}
+  .aw-arrow:active{transform:translateY(-50%) scale(.95)}
+  .aw-arrow:focus-visible{outline:2px solid #fff;outline-offset:3px}
+  .aw-prev{left:14px} .aw-next{right:14px}
+  .aw-arrow svg{width:22px;height:22px}
+ 
+  .aw-scrim{position:absolute;left:0;right:0;bottom:0;height:74px;z-index:1;pointer-events:none;
+            background:linear-gradient(to top,rgba(20,14,8,.30),transparent)}
+ 
+  .aw-dots{position:absolute;left:0;right:0;bottom:13px;z-index:2;
+           display:flex;gap:8px;justify-content:center;align-items:center}
+  .aw-dot{width:8px;height:8px;padding:0;border:0;border-radius:999px;cursor:pointer;
+          background:rgba(255,255,255,.55);box-shadow:0 1px 3px rgba(0,0,0,.25);
+          transition:width .25s,background .25s;-webkit-tap-highlight-color:transparent}
+  .aw-dot.is-active{width:24px;background:#fff}
+  .aw-dot:focus-visible{outline:2px solid #fff;outline-offset:2px}
+ 
+  @media (max-width:600px){
+    .aw-arrow{width:38px;height:38px} .aw-arrow svg{width:19px;height:19px}
+    .aw-prev{left:9px} .aw-next{right:9px}
+    .aw-dots{bottom:10px}
+  }
+  @media (prefers-reduced-motion:reduce){ .aw-track{transition:none} }
+
+  .paper{padding:64px 20px}
+  .wrap{max-width:920px;margin:0 auto}
+  .head{text-align:center;margin-bottom:30px}
+  .ornlogo{width:44px;height:auto;opacity:.9;margin-bottom:14px}
+  .head h2{font-size:clamp(24px,4vw,38px);line-height:1.15;margin:0 0 12px;font-weight:500}
+  .head h2 span{color:var(--accent)}
+  .head p{max-width:56ch;margin:0 auto;color:var(--muted);font-size:16px;line-height:1.6}
+  .vframe{border-radius:16px;overflow:hidden;box-shadow:0 18px 50px rgba(60,45,30,.16)}
+  .ctaband{text-align:center;margin-top:34px}
+  .microline{color:var(--muted);font-size:14px;letter-spacing:.01em}
+  .bigcta{display:inline-flex;align-items:center;gap:9px;margin-top:10px;padding:15px 26px;
+          background:var(--ink);color:#fff;text-decoration:none;border-radius:999px;font-size:17px}
+  .bigcta .arw{transition:transform .2s} .bigcta:hover .arw{transform:translateX(4px)}
+  .submicro{color:var(--muted);font-size:13px;margin-top:12px}
+  .reveal{opacity:1}
+
+  /*  */
 figcaption{
   display:none;
 }
@@ -880,7 +937,7 @@ footer h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#ff
 </section>
 
 <!-- WALKTHROUGH VIDEO -->
-<section class="paper">
+<!-- <section class="paper">
   <div class="wrap">
     <div class="head reveal">
       <img class="ornlogo" src="https://aantarika.com/assets/img/logo/OnlyLogo.png" alt="" />
@@ -891,6 +948,55 @@ footer h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#ff
       <div class="vframe"><script src="https://fast.wistia.com/embed/tu4vzopo3e.js" async type="module"></script><wistia-player media-id="tu4vzopo3e" aspect="1.7777777777777777"></wistia-player></div>
     </div>
   </div>
+  <div class="ctaband reveal"><div class="microline">Stand inside one in person. Book your visit</div><br><a href="#book" class="bigcta">Book my experience centre visit <svg class="arw" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><div class="submicro">Visit our J.P. Nagar experience centre. No pressure, no deposit.</div></div>
+</section> -->
+
+<section class="paper">
+  <div class="wrap">
+    <div class="head reveal">
+      <img class="ornlogo" src="https://aantarika.com/assets/img/logo/OnlyLogo.png" alt="" />
+      <h2>Take a walk through <span>a finished Aantarika home.</span></h2>
+      <p>Before you visit in person, see what handover day actually looks like, in a real Bangalore home built by our team.</p>
+    </div>
+ 
+    <div class="walk reveal">
+      <div class="vframe">
+ 
+        <div class="aw-slider" id="awSlider" role="group" aria-roledescription="carousel" aria-label="Finished Aantarika home walkthrough">
+          <div class="aw-track">
+            <div class="aw-slide" role="group" aria-roledescription="slide" aria-label="1 of 5">
+              <img src="avatars/F-H-25.JPG" alt="Living room on handover day" loading="lazy" />
+            </div>
+            <div class="aw-slide" role="group" aria-roledescription="slide" aria-label="2 of 5">
+              <img src="avatars/F-H-16.JPG" alt="Modular kitchen, finished" loading="lazy" />
+            </div>
+            <div class="aw-slide" role="group" aria-roledescription="slide" aria-label="3 of 5">
+              <img src="avatars/F-H-15.JPG" alt="Master bedroom wardrobe" loading="lazy" />
+            </div>
+            <div class="aw-slide" role="group" aria-roledescription="slide" aria-label="4 of 5">
+              <img src="avatars/F-H-11.JPG" alt="Pooja unit detail" loading="lazy" />
+            </div>
+            <div class="aw-slide" role="group" aria-roledescription="slide" aria-label="5 of 5">
+              <img src="avatars/F-H-3.JPG" alt="Balcony and utility" loading="lazy" />
+            </div>
+          </div>
+ 
+          <div class="aw-scrim"></div>
+ 
+          <button class="aw-arrow aw-prev" type="button" aria-label="Previous image">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+          </button>
+          <button class="aw-arrow aw-next" type="button" aria-label="Next image">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+ 
+          <div class="aw-dots" aria-label="Choose slide"></div>
+        </div>
+ 
+      </div>
+    </div>
+  </div>
+ 
   <div class="ctaband reveal"><div class="microline">Stand inside one in person. Book your visit</div><br><a href="#book" class="bigcta">Book my experience centre visit <svg class="arw" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><div class="submicro">Visit our J.P. Nagar experience centre. No pressure, no deposit.</div></div>
 </section>
 
@@ -1241,6 +1347,31 @@ var CONFIG = {
   if(stampEl){ if(reduce){stampEl.classList.add("pop");} else { var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("pop"); so.unobserve(e.target);}})},{threshold:.4}); so.observe(stampEl);} }
   /* audit -> tidycal / split thankyou */
   function setBad(n,on){var f=$('.field[data-f="'+n+'"]'); if(f) f.classList.toggle("bad",on);}
+
+  /* --- Indian mobile validation helpers --- */
+  function normPhone(raw){
+    var d=(raw||"").replace(/\D/g,"");
+    if(d.length>10){
+      if(d.length===12&&d.slice(0,2)==="91") d=d.slice(2);      /* +91XXXXXXXXXX */
+      else if(d.length===11&&d.charAt(0)==="0") d=d.slice(1);   /* 0XXXXXXXXXX   */
+      else d=d.slice(-10);                                       /* best guess    */
+    }
+    return d.slice(0,10);
+  }
+  function phoneError(d){
+    if(!d) return "Please enter your phone number.";
+    if(!/^[6-9]/.test(d)) return "Mobile number must start with 6, 7, 8 or 9.";
+    if(d.length<10) return "Please enter a valid 10 digit number.";
+    if(/^(\d)\1{9}$/.test(d)) return "Please enter a real mobile number.";
+    if(!/^[6-9]\d{9}$/.test(d)) return "Please enter a valid 10 digit number.";
+    return "";
+  }
+  function setPhoneError(msg){
+    var f=$('.field[data-f="phone"]'); if(!f) return;
+    var em=f.querySelector(".emsg");
+    if(msg){ if(em) em.textContent=msg; f.classList.add("bad"); }
+    else f.classList.remove("bad");
+  }
   function buildTidyCal(lead){
     var m=$("#tcMount");
     if(CONFIG.TIDYCAL_URL){
@@ -1267,7 +1398,7 @@ var CONFIG = {
     var possession=$("#q_possession").value, property=$("#q_property").value, area=$("#q_area").value, location=$("#q_location").value, budget=$("#q_budget").value;
     var ok=true;
     setBad("name",!name); ok=ok&&!!name;
-    var pOk=phone.length>=10&&phone.length<=13; setBad("phone",!pOk); ok=ok&&pOk;
+    phone=normPhone(phone); var perr=phoneError(phone); setPhoneError(perr); var pOk=!perr; ok=ok&&pOk;
     setBad("possession",!possession); ok=ok&&!!possession;
     setBad("property",!property); ok=ok&&!!property;
     setBad("area",!area); ok=ok&&!!area;
@@ -1289,6 +1420,23 @@ var CONFIG = {
     }
   }
   $("#auditBtn").addEventListener("click",submitAudit);
+
+  /* live Indian-mobile validation: keeps the field to 10 digits and shows an
+     appropriate message the moment the number is wrong or fake */
+  (function(){
+    var pin=$("#q_phone"); if(!pin) return;
+    pin.setAttribute("inputmode","numeric");
+    pin.addEventListener("input",function(){
+      var d=normPhone(pin.value); if(d!==pin.value) pin.value=d;
+      if(!d){ setPhoneError(""); return; }
+      if(!/^[6-9]/.test(d) || d.length===10){ setPhoneError(phoneError(d)); }
+      else { setPhoneError(""); }   /* still typing a plausible number */
+    });
+    pin.addEventListener("blur",function(){
+      var d=normPhone(pin.value); if(!d){ setPhoneError(""); return; }
+      setPhoneError(phoneError(d));
+    });
+  })();
 
   /* proof ticker */
   var ACTS=[
@@ -1328,6 +1476,139 @@ var CONFIG = {
 
     seeMoreBtn.style.display = "none";
   });
+</script>
+
+<script>
+(function () {
+  var root = document.getElementById('awSlider');
+  if (!root) return;
+ 
+  var track  = root.querySelector('.aw-track');
+  var slides = Array.prototype.slice.call(root.querySelectorAll('.aw-slide'));
+  var prev   = root.querySelector('.aw-prev');
+  var next   = root.querySelector('.aw-next');
+  var dotsWrap = root.querySelector('.aw-dots');
+  var n = slides.length;
+  if (!n) return;
+ 
+  var AUTOPLAY = true;      /* set false to disable auto-advance */
+  var DELAY    = 5000;      /* ms between auto-advances          */
+ 
+  var idx = 0;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ 
+  /* ---- dots ---- */
+  var dots = [];
+  for (var i = 0; i < n; i++) (function (i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'aw-dot' + (i === 0 ? ' is-active' : '');
+    b.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+    b.addEventListener('click', function () { go(i); restart(); });
+    dotsWrap.appendChild(b);
+    dots.push(b);
+  })(i);
+ 
+  function update() {
+    track.style.transform = 'translateX(' + (-idx * 100) + '%)';
+    for (var i = 0; i < n; i++) {
+      dots[i].classList.toggle('is-active', i === idx);
+      dots[i].setAttribute('aria-current', i === idx ? 'true' : 'false');
+      slides[i].setAttribute('aria-hidden', i === idx ? 'false' : 'true');
+    }
+  }
+  function go(i) { idx = (i + n) % n; update(); }
+ 
+  if (next) next.addEventListener('click', function () { go(idx + 1); restart(); });
+  if (prev) prev.addEventListener('click', function () { go(idx - 1); restart(); });
+ 
+  /* ---- keyboard ---- */
+  root.setAttribute('tabindex', '0');
+  root.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { go(idx + 1); restart(); }
+    else if (e.key === 'ArrowLeft') { go(idx - 1); restart(); }
+  });
+ 
+  /* ---- drag / swipe ---- */
+  var dragging = false, startX = 0, delta = 0, w = 0;
+ 
+  function down(x, e) {
+    if (e && e.target && e.target.closest && e.target.closest('.aw-arrow, .aw-dot')) return;
+    dragging = true; startX = x; delta = 0; w = root.clientWidth || 1;
+    track.classList.add('is-dragging');
+    stop();
+  }
+  function move(x) {
+    if (!dragging) return;
+    delta = x - startX;
+    track.style.transform = 'translateX(' + (-idx * 100 + (delta / w) * 100) + '%)';
+  }
+  function up() {
+    if (!dragging) return;
+    dragging = false;
+    track.classList.remove('is-dragging');
+    var threshold = Math.max(40, w * 0.12);
+    if (delta <= -threshold) go(idx + 1);
+    else if (delta >= threshold) go(idx - 1);
+    else update();
+    restart();
+  }
+ 
+  if (window.PointerEvent) {
+    root.addEventListener('pointerdown', function (e) {
+      if (e.button && e.button !== 0) return;
+      down(e.clientX, e);
+    });
+    window.addEventListener('pointermove', function (e) { move(e.clientX); });
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', up);
+  } else {
+    root.addEventListener('touchstart', function (e) { down(e.touches[0].clientX, e); }, { passive: true });
+    root.addEventListener('touchmove',  function (e) { move(e.touches[0].clientX); }, { passive: true });
+    root.addEventListener('touchend', up);
+    root.addEventListener('mousedown', function (e) { down(e.clientX, e); });
+    window.addEventListener('mousemove', function (e) { move(e.clientX); });
+    window.addEventListener('mouseup', up);
+  }
+ 
+  /* ---- autoplay ---- */
+  var timer = null;
+  function start() { if (AUTOPLAY && !reduce && n > 1 && !timer) timer = setInterval(function () { go(idx + 1); }, DELAY); }
+  function stop()  { if (timer) { clearInterval(timer); timer = null; } }
+  function restart() { stop(); start(); }
+ 
+  root.addEventListener('mouseenter', stop);
+  root.addEventListener('mouseleave', start);
+  root.addEventListener('focusin', stop);
+  root.addEventListener('focusout', start);
+  document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+ 
+  /* ---- demo-only placeholder fallback ----
+     Shows a labelled placeholder if an image path 404s, so this file
+     previews without your real assets. Safe to leave in; it only ever
+     fires when an <img> fails to load. */
+  var tones = [['#efe6d8','#c9a97f'],['#e7ded4','#b98b62'],['#e9e2d6','#a99270'],['#efe7da','#c39a6d'],['#e6ded2','#b08a63']];
+  slides.forEach(function (s, i) {
+    var img = s.querySelector('img');
+    if (!img) return;
+    img.addEventListener('error', function () {
+      var c = tones[i % tones.length];
+      var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720">' +
+        '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+        '<stop offset="0" stop-color="' + c[0] + '"/><stop offset="1" stop-color="' + c[1] + '"/>' +
+        '</linearGradient></defs><rect width="1280" height="720" fill="url(%23g)"/>' +
+        '<text x="640" y="356" font-family="Georgia,serif" font-size="46" fill="#5c4a34" ' +
+        'text-anchor="middle">Walkthrough image ' + (i + 1) + '</text>' +
+        '<text x="640" y="404" font-family="Georgia,serif" font-size="22" fill="#7d6a52" ' +
+        'text-anchor="middle">replace with assets/img/walkthrough/handover-0' + (i + 1) + '.jpg</text></svg>';
+      img.src = 'data:image/svg+xml,' + encodeURIComponent(svg);
+    }, { once: true });
+    if (img.complete && img.naturalWidth === 0) img.dispatchEvent(new Event('error'));
+  });
+ 
+  update();
+  start();
+})();
 </script>
 </body>
 </html>

@@ -1225,6 +1225,7 @@ footer h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#ff
             <h3>Tell us about your home</h3>
             <p class="pnote">Takes about 40 seconds. No deposit, no obligation.</p>
             <div class="field" data-f="name"><label class="fl">Your name</label><input type="text" id="q_name" placeholder="Full name" autocomplete="name" /><div class="emsg">Please enter your name.</div></div>
+            <div class="field" data-f="email"><label class="fl">Email address</label><input type="email" id="q_email" placeholder="you@example.com" autocomplete="email" /><div class="emsg">Please enter a valid email address.</div></div>
             <div class="field" data-f="phone"><label class="fl">Phone (WhatsApp)</label><input type="tel" id="q_phone" placeholder="10 digit mobile number" inputmode="numeric" autocomplete="tel" /><div class="emsg">Please enter a valid 10 digit number.</div></div>
             <div class="field" data-f="possession"><label class="fl">When is possession?</label><select id="q_possession"><option value="" disabled selected>Select</option><option>1 to 3 months</option><option>3 to 6 months</option><option>Already residing</option></select><div class="emsg">Please select one.</div></div>
             <div class="fgrid">
@@ -1375,7 +1376,7 @@ var CONFIG = {
   function buildTidyCal(lead){
     var m=$("#tcMount");
     if(CONFIG.TIDYCAL_URL){
-      var url=CONFIG.TIDYCAL_URL+(CONFIG.TIDYCAL_URL.indexOf("?")>-1?"&":"?")+"name="+encodeURIComponent(lead.name);
+      var url=CONFIG.TIDYCAL_URL+(CONFIG.TIDYCAL_URL.indexOf("?")>-1?"&":"?")+"name="+encodeURIComponent(lead.name)+"&email="+encodeURIComponent(lead.email);
       var f=document.createElement("iframe"); f.src=url; f.title="Book your consultation"; f.setAttribute("loading","lazy"); m.appendChild(f);
     }else{
       m.innerHTML='<div class="tc-demo"><div class="tc-demo-cal"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/></svg><div class="tc-demo-t">Your scheduling calendar appears here</div><div class="tc-demo-s">On the live site you pick a date and time on a calendar here. For this preview, continue below to see your confirmation.</div></div><button type="button" class="bigcta" id="demoConfirm">Confirm my consultation <svg class="arw" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>';
@@ -1391,13 +1392,14 @@ var CONFIG = {
   });
   function sendLead(lead){
     if(CONFIG.LEAD_WEBHOOK){ try{ if(navigator.sendBeacon){navigator.sendBeacon(CONFIG.LEAD_WEBHOOK,new Blob([JSON.stringify(lead)],{type:"application/json"}));} else { fetch(CONFIG.LEAD_WEBHOOK,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(lead),keepalive:true}).catch(function(){}); } }catch(x){} }
-    try{ if(CONFIG.DESK_URL && CONFIG.DESK_KEY){ fetch(CONFIG.DESK_URL,{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+CONFIG.DESK_KEY},body:JSON.stringify({form:"contact",honeypot:"",name:lead.name,phone:lead.phone,possession:lead.possession,property:lead.property,area:lead.area,location:lead.location,budget:lead.budget,qualified:lead.qualified,source:lead.source,page:location.href}),keepalive:true}).catch(function(){}); } }catch(x){}
+    try{ if(CONFIG.DESK_URL && CONFIG.DESK_KEY){ fetch(CONFIG.DESK_URL,{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+CONFIG.DESK_KEY},body:JSON.stringify({form:"contact",honeypot:"",name:lead.name,email:lead.email,phone:lead.phone,possession:lead.possession,property:lead.property,area:lead.area,location:lead.location,budget:lead.budget,qualified:lead.qualified,source:lead.source,page:location.href}),keepalive:true}).catch(function(){}); } }catch(x){}
   }
   function submitAudit(){
-    var name=$("#q_name").value.trim(), phone=$("#q_phone").value.replace(/\D/g,"");
+    var name=$("#q_name").value.trim(), email=$("#q_email").value.trim(), phone=$("#q_phone").value.replace(/\D/g,"");
     var possession=$("#q_possession").value, property=$("#q_property").value, area=$("#q_area").value, location=$("#q_location").value, budget=$("#q_budget").value;
     var ok=true;
     setBad("name",!name); ok=ok&&!!name;
+    setBad("email",!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)); ok=ok&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     phone=normPhone(phone); var perr=phoneError(phone); setPhoneError(perr); var pOk=!perr; ok=ok&&pOk;
     setBad("possession",!possession); ok=ok&&!!possession;
     setBad("property",!property); ok=ok&&!!property;
@@ -1407,7 +1409,7 @@ var CONFIG = {
     if(!ok){var bd=$(".field.bad"); if(bd) bd.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"}); return;}
     var budgetVal=$("#q_budget").options[$("#q_budget").selectedIndex].value;
     var qualified=(location!=="outside" && budgetVal!=="low");
-    var lead={name:name,phone:phone,possession:possession,property:property,area:area,location:location,budget:budget,qualified:qualified,source:"landing_page_audit",ts:new Date().toISOString()};
+    var lead={name:name,email:email,phone:phone,possession:possession,property:property,area:area,location:location,budget:budget,qualified:qualified,source:"landing_page_audit",ts:new Date().toISOString()};
     sendLead(lead);
     if(qualified){
       $("#auditStep").style.display="none"; $("#tcWrap").classList.add("show"); buildTidyCal(lead);
